@@ -6,11 +6,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.home.HomePage;
+import pages.register.RegisterPage;
 
 import java.time.Duration;
 
@@ -26,8 +26,6 @@ public class MyStepDefs extends EnvTarget {
         Duration duration = Duration.ofSeconds(30);
         WebDriverWait wait = new WebDriverWait(driver, duration);
 
-        //wait.until(driver -> driver.getCurrentUrl().equals(urlLogin));
-
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//*[@id='loginPanel']/p[2]")
@@ -37,7 +35,8 @@ public class MyStepDefs extends EnvTarget {
 
     @When("^User click register link button$")
     public void userClickRegisterLinkButton() {
-        driver.findElement(By.xpath("//a[contains(@href, 'register')]")).click();
+        HomePage homePage = new HomePage(driver);
+        homePage.clickRegisterButton();
     }
 
     @Then("^User is in register page$")
@@ -54,29 +53,39 @@ public class MyStepDefs extends EnvTarget {
 
     @When("^User input name$")
     public void userInputName() {
-        driver.findElement(By.id("customer.firstName")).sendKeys("Yun");
-        driver.findElement(By.name("customer.lastName")).sendKeys("Edwi");
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.fillNameRegisterForm(
+                "Yun",
+                "Edwi"
+        );
     }
 
     @And("^User input address detail$")
     public void userInputAddressDetail() {
-        driver.findElement(By.id("customer.address.street")).sendKeys("Jalan");
-        driver.findElement(By.id("customer.address.city")).sendKeys("Jakarta");
-        driver.findElement(By.id("customer.address.state")).sendKeys("Jakarta");
-        driver.findElement(By.id("customer.address.zipCode")).sendKeys("12345");
-        driver.findElement(By.id("customer.phoneNumber")).sendKeys("08123456789");
-        driver.findElement(By.id("customer.ssn")).sendKeys("123456789");
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.fillAddressRegisterForm(
+                "Jalan",
+                "Jakarta",
+                "Jakarta",
+                "12345",
+                "08123456789",
+                "123456789"
+        );
     }
 
     @And("^User fill valid username and password$")
     public void userFillValidUsernameAndPassword() {
-        driver.findElement(By.id("customer.username")).sendKeys("Yuni01");
-        driver.findElement(By.id("customer.password")).sendKeys("123456");
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.userFillValidUsernameAndPassword(
+                "Yuni04",
+                "123456"
+        );
     }
 
     @And("^User input password confirmation$")
     public void userInputPasswordConfirmation() {
-        driver.findElement(By.id("repeatedPassword")).sendKeys("123456");
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.userInputPasswordConfirmation("123456");
     }
 
     @When("^User click register button$")
@@ -92,7 +101,8 @@ public class MyStepDefs extends EnvTarget {
 
     @And("^User input invalid password confirmation$")
     public void userInputInvalidPasswordConfirmation() {
-        driver.findElement(By.id("repeatedPassword")).sendKeys("1234567");
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.userInputPasswordConfirmation("1234567");
     }
 
     @Then("^User get error password did not match$")
