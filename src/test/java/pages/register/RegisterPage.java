@@ -39,4 +39,12 @@ public class RegisterPage {
     public void userInputPasswordConfirmation(String password) {
         webDriver.findElement(ElementLocatorRegister.REPEAT_PASSWORD_FIELD).sendKeys(password);
     }
+
+    public void clickRegisterButton() {
+        webDriver.findElement(ElementLocatorRegister.REGISTER_BUTTON).click();
+    }
+
+    public void clickLogoutButton() {
+        webDriver.findElement(ElementLocatorRegister.LOGOUT_BUTTON).click();
+    }
 }

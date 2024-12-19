@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.home.HomePage;
+import pages.register.ElementLocatorRegister;
 import pages.register.RegisterPage;
 
 import java.time.Duration;
@@ -28,7 +29,7 @@ public class MyStepDefs extends EnvTarget {
 
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[@id='loginPanel']/p[2]")
+                        ElementLocatorRegister.LOGIN_PANEL
                 )
         );
     }
@@ -46,7 +47,7 @@ public class MyStepDefs extends EnvTarget {
 
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//h1[contains(text(), 'Signing up is easy!')]")
+                        ElementLocatorRegister.REGISTER_TITLE
                 )
         );
     }
@@ -90,12 +91,14 @@ public class MyStepDefs extends EnvTarget {
 
     @When("^User click register button$")
     public void userClickRegisterButton() {
-        driver.findElement(By.xpath("//*[@id='customerForm']/table/tbody/tr[13]/td[2]/input")).click();
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.clickRegisterButton();
     }
 
     @Then("^User register successfully$")
     public void userRegisterSuccessfully() {
-        driver.findElement(By.xpath("//a[contains(@href, 'logout')]"));
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.clickLogoutButton();
         driver.quit();
     }
 
@@ -107,7 +110,15 @@ public class MyStepDefs extends EnvTarget {
 
     @Then("^User get error password did not match$")
     public void userGetErrorPasswordDidNotMatch() {
-        driver.findElement(By.xpath("//*[@id='repeatedPassword.errors']"));
+        Duration duration = Duration.ofSeconds(30);
+        WebDriverWait wait = new WebDriverWait(driver, duration);
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        ElementLocatorRegister.ERROR_PASSWORD_NOT_MATCH
+                )
+        );
+
         driver.quit();
     }
 }
