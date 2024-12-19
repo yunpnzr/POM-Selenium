@@ -29,5 +29,5 @@ public class ElementLocatorRegister {
 
     //alert
     public static final By ERROR_PASSWORD_NOT_MATCH = By.xpath("//*[@id='repeatedPassword.errors']");
-
+    public static final By USERNAME_ALREADY_EXIST = By.xpath("//*[@id='customer.username.errors']");
 }
